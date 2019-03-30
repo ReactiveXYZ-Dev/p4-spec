@@ -2220,26 +2220,26 @@ structField
 ~ End P4Grammar
 
 where each `typeRef` is restricted to a bit-string type (fixed or
-variable), a fixed-width signed integer type, a boolean type, or a struct that 
-itself contains other struct fields, nested arbitrarily, as long as all of the 
-"leaf" types are `bit<W>`, `int<W>`, a serializable `enum`, or a `bool`. If a 
-`bool` is used inside a P4 header, all implementations encode the `bool` as a 
-one bit long field. This declaration introduces a new identifier in the 
-current scope; the type can be referred to using this identifier. A header is 
-similar to a `struct` in C, containing all the specified fields. However, in 
-addition, a header also contains a hidden Boolean "validity" field. When the 
-"validity" bit is `true` we say that the "header is valid". When a header is 
+variable), a fixed-width signed integer type, a boolean type, or a struct that
+itself contains other struct fields, nested arbitrarily, as long as all of the
+"leaf" types are `bit<W>`, `int<W>`, a serializable `enum`, or a `bool`. If a
+`bool` is used inside a P4 header, all implementations encode the `bool` as a
+one bit long field. This declaration introduces a new identifier in the
+current scope; the type can be referred to using this identifier. A header is
+similar to a `struct` in C, containing all the specified fields. However, in
+addition, a header also contains a hidden Boolean "validity" field. When the
+"validity" bit is `true` we say that the "header is valid". When a header is
 created its "validity" bit is automatically set to `false`. The "validity"
 bit can be manipulated by using the header methods `isValid()`, `setValid()`,
 and `setInvalid()`, as described in Section [#sec-ops-on-hdrs].
 
-Note, nesting of headers is not supported. One reason is that it leads to 
-complications in defining the behavior of arbitrary sequences of `setValid`, 
-`setInvalid`, and `emit` operations. Consider an example where header `h1` 
-contains header `h2` as a member, both currently valid. A program executes 
-`h2.setInvalid()` followed by `packet.emit(h1)`. Should all fields of `h1` 
-be emitted, but skipping `h2`? Similarly, should `h1.setInvalid()` 
-invalidate all headers contained within `h1`, regardless of how deeply 
+Note, nesting of headers is not supported. One reason is that it leads to
+complications in defining the behavior of arbitrary sequences of `setValid`,
+`setInvalid`, and `emit` operations. Consider an example where header `h1`
+contains header `h2` as a member, both currently valid. A program executes
+`h2.setInvalid()` followed by `packet.emit(h1)`. Should all fields of `h1`
+be emitted, but skipping `h2`? Similarly, should `h1.setInvalid()`
+invalidate all headers contained within `h1`, regardless of how deeply
 they are nested?
 
 Header types may be empty:
@@ -2250,9 +2250,9 @@ header Empty_h { }
 
 Note that an empty header still contains a validity bit.
 
-When a struct is inside of a header, the order of the fields for the purposes 
+When a struct is inside of a header, the order of the fields for the purposes
 of `extract` and `emit` calls is the order of the fields as defined in the source code.
-An example of a header including a struct is included below. 
+An example of a header including a struct is included below.
 
 ~ Begin P4Example
 struct ipv6_addr {
@@ -2602,8 +2602,8 @@ infinite-precision integer, without a width specified.
 
 [^enum_header]: an `enum` type used as a field in a `header` must specify a
     underlying type and representation for `enum` elements.
-[^struct_header]: a `struct` or nested `struct` type that has the same properties, 
-    used as a field in a `header` must contain only 
+[^struct_header]: a `struct` or nested `struct` type that has the same properties,
+    used as a field in a `header` must contain only
     `bit<W>`, `int<W>`, a serializable `enum`, or a `bool`.
 
 
@@ -7237,9 +7237,9 @@ The P4 compiler should provide:
 ## Summary of changes made in version 1.2.0
 
 * Constrain `default` label position for `switch` statements.
-* Allow empty tuples.
-* Added `@deprecated` annotation.
-* Relaxed the structure of annotation bodies.
+* Allow empty tuples (Seciton [#sec-tuple-types]).
+* Added `@deprecated` annotation (Section [#sec-deprecated-anno]).
+* Relaxed the structure of annotation bodies (Section [#sec-annotations]).
 * Removed the `@pkginfo` annotation. This is defined by the P4Runtime
   specification.
 * Added `int` type (Section [#sec-infinite-precision-integers].)
@@ -7248,6 +7248,7 @@ The P4 compiler should provide:
 * Clarify the significance of order of entries in `const entries`
   (Section [#sec-entries]).
 * Added methods to calculate header size (Section [#sec-ops-on-hdrs]).
+* Added structure overlays (Section [#sec-overlays]).
 
 ## Summary of changes made in version 1.1.0
 
